@@ -6,6 +6,14 @@
     <meta name="theme-color" content="#061525" />
     <meta name="description" content="BizRoll — game kinh tế đối kháng trên bàn cờ thành phố." />
     <link rel="icon" type="image/svg+xml" href="/bizroll/favicon.svg" />
+    <script>
+      if (window.location.hostname === "thangldw.github.io") {
+        const analytics = document.createElement("script");
+        analytics.defer = true;
+        analytics.src = "/js/analytics.js";
+        document.head.appendChild(analytics);
+      }
+    </script>
     <title>BizRoll</title>
     <script type="module" crossorigin src="/bizroll/assets/index-gl-_psvr.js"></script>
     <link rel="stylesheet" crossorigin href="/bizroll/assets/index-C3rO4uuY.css">
