@@ -6,6 +6,8 @@ Generated static files for the [BizRoll production website](https://thangldw.git
 
 > This is a deployment repository. Application source changes belong in [`thangldw/bizroll-game`](https://github.com/thangldw/bizroll-game).
 
+Current release: [`v2.0.0`](https://github.com/thangldw/bizroll-game/releases/tag/v2.0.0) · source `908944db12f0f65e2d13cc1cf9fdcba850ab69dc` · previous/rollback artifact `5945738`.
+
 ---
 
 ## English
@@ -40,7 +42,7 @@ npm run release:check
 
 After the gate passes:
 
-1. Replace the generated contents of this repository with the exact contents of `bizroll-game/dist/`.
+1. Run `npm run release:sync -- /absolute/path/to/bizroll` from `bizroll-game` to replace generated contents with the exact validated `dist/` artifact.
 2. Preserve `.git/`, `.gitignore`, and this `README.md`.
 3. Review all additions, modifications, and deletions. Generated files must not include `.env` files, source maps, TypeScript source, database dumps, or privileged credentials.
 4. Record the source commit SHA in the release change, commit, and push the artifact.
