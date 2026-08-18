@@ -6,7 +6,7 @@ Generated static files for the [BizRoll production website](https://thangldw.git
 
 > This is a deployment repository. Application source changes belong in [`thangldw/bizroll-game`](https://github.com/thangldw/bizroll-game).
 
-Current release: [`v2.0.0`](https://github.com/thangldw/bizroll-game/releases/tag/v2.0.0) · source `908944db12f0f65e2d13cc1cf9fdcba850ab69dc` · previous/rollback artifact `5945738`.
+Current release: [`v2.0.1`](https://github.com/thangldw/bizroll-game/releases/tag/v2.0.1) · source `23f4a89f9d12943a01f5029c236422fde552636f` · previous/rollback artifact `5afcd9e`.
 
 ---
 
