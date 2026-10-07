@@ -6,7 +6,7 @@ Generated static files for the [BizRoll production website](https://thangldw.git
 
 > This is a deployment repository. Application source changes belong in [`thangldw/bizroll-game`](https://github.com/thangldw/bizroll-game).
 
-Current release: [`v2.0.1`](https://github.com/thangldw/bizroll-game/releases/tag/v2.0.1) · source `23f4a89f9d12943a01f5029c236422fde552636f` · previous/rollback artifact `5afcd9e`.
+Current backend architecture: Cloudflare Workers + SQLite-backed Durable Objects (source version 2.1). The last tagged source release is [v2.0.2](https://github.com/thangldw/bizroll-game/releases/tag/v2.0.2); a tag alone does not identify the current Pages artifact or Worker version. Use the source [Cloudflare runbook](https://github.com/thangldw/bizroll-game/blob/main/docs/cloudflare-operations.md) and record both deployments.
 
 ---
 
@@ -16,7 +16,7 @@ Current release: [`v2.0.1`](https://github.com/thangldw/bizroll-game/releases/ta
 
 This repository is the GitHub Pages publication target for BizRoll. It contains the generated output of the source repository's `dist/` directory and is served at <https://thangldw.github.io/bizroll/>.
 
-Do not use this repository for application development. Source code, tests, Supabase migrations, Edge Functions, environment templates, and release automation are maintained in [`thangldw/bizroll-game`](https://github.com/thangldw/bizroll-game).
+Do not use this repository for application development. Source code, tests, Cloudflare Worker/Durable Object code, legacy Supabase rollback inputs, environment templates, and release automation are maintained in [`thangldw/bizroll-game`](https://github.com/thangldw/bizroll-game).
 
 ### Repository contents
 
@@ -54,16 +54,16 @@ npm run test:e2e:prod
 
 6. Verify the production URL in a fresh browser session.
 
-The full deployment, backup, rollback, and incident procedures are documented in the source repository's [operations runbook](https://github.com/thangldw/bizroll-game/blob/main/OPERATIONS.md).
+The full deployment, backup, rollback, and incident procedures are documented in the source repository's [Cloudflare operations runbook](https://github.com/thangldw/bizroll-game/blob/main/docs/cloudflare-operations.md).
 
 ### Rollback
 
-Restore the last known-good artifact commit, push it, wait for GitHub Pages, and rerun the production smoke test. A web rollback does not roll back Supabase migrations or the `match-action` Edge Function; confirm backend compatibility before restoring an older client.
+Restore the last known-good artifact commit, push it, wait for GitHub Pages, and rerun the production smoke test. A web rollback does not roll back the Worker version or Durable Object data. Verify client/backend compatibility; legacy Supabase source is historical reference, not an available hosted rollback backend.
 
 ### Security
 
 - Do not commit secrets, database exports, real environment files, or source maps.
-- A Supabase publishable/anonymous key may be present in the client bundle by design; privileged service-role keys and database credentials must never be present.
+- Worker session/operations secrets and privileged credentials must never enter frontend bundles. Legacy Supabase public keys are not privileged secrets; service-role keys remain forbidden.
 - Report suspected vulnerabilities privately to the repository owner rather than posting exploitable details publicly.
 
 No open-source license is currently included. All rights are reserved unless the repository owner states otherwise.
@@ -76,7 +76,7 @@ No open-source license is currently included. All rights are reserved unless the
 
 Repo này là đích phát hành GitHub Pages của BizRoll. Repo chứa output đã sinh từ thư mục `dist/` của source repo và được phục vụ tại <https://thangldw.github.io/bizroll/>.
 
-Không dùng repo này để phát triển ứng dụng. Source code, test, Supabase migration, Edge Function, template môi trường và công cụ release được duy trì tại [`thangldw/bizroll-game`](https://github.com/thangldw/bizroll-game).
+Không dùng repo này để phát triển ứng dụng. Source code, test, Worker/Durable Object Cloudflare, dữ liệu rollback Supabase cũ, template môi trường và công cụ release được duy trì tại [`thangldw/bizroll-game`](https://github.com/thangldw/bizroll-game).
 
 ### Nội dung repo
 
@@ -114,16 +114,16 @@ npm run test:e2e:prod
 
 6. Kiểm tra URL production trong một phiên trình duyệt mới.
 
-Quy trình đầy đủ về deploy, backup, rollback và xử lý sự cố nằm trong [operations runbook](https://github.com/thangldw/bizroll-game/blob/main/OPERATIONS.md) của source repo.
+Quy trình đầy đủ về deploy, backup, rollback và xử lý sự cố nằm trong [operations runbook](https://github.com/thangldw/bizroll-game/blob/main/docs/cloudflare-operations.md) của source repo.
 
 ### Rollback
 
-Khôi phục artifact commit tốt gần nhất, push, chờ GitHub Pages và chạy lại production smoke test. Rollback web không rollback Supabase migration hoặc Edge Function `match-action`; phải xác nhận tương thích backend trước khi phục hồi client cũ.
+Khôi phục artifact commit tốt gần nhất, push, chờ GitHub Pages và chạy lại production smoke test. Rollback web không rollback Worker hoặc dữ liệu Durable Object. Xác minh tương thích client/backend; source Supabase cũ là tham chiếu lịch sử, không phải backend hosted còn hoạt động để rollback.
 
 ### Bảo mật
 
 - Không commit secret, database export, file môi trường thật hoặc source map.
-- Supabase publishable/anonymous key có thể xuất hiện trong client bundle theo thiết kế; service-role key đặc quyền và database credential tuyệt đối không được xuất hiện.
+- Session/operations secret của Worker và credential đặc quyền không được có trong frontend bundle. Public key Supabase legacy không phải secret đặc quyền; service-role key vẫn bị cấm.
 - Báo cáo lỗ hổng riêng cho chủ repo, không đăng chi tiết có thể khai thác công khai.
 
 Hiện chưa có giấy phép nguồn mở. Mọi quyền được bảo lưu trừ khi chủ repo công bố khác.
@@ -136,7 +136,7 @@ Hiện chưa có giấy phép nguồn mở. Mọi quyền được bảo lưu tr
 
 このリポジトリは BizRoll の GitHub Pages 公開先です。Source Repository の `dist/` から生成された出力を格納し、<https://thangldw.github.io/bizroll/> で配信します。
 
-このリポジトリでアプリケーション開発を行わないでください。Source Code、Test、Supabase Migration、Edge Function、環境 Template、Release Automation は [`thangldw/bizroll-game`](https://github.com/thangldw/bizroll-game) で管理されています。
+このリポジトリでアプリケーション開発を行わないでください。Source Code、Test、Cloudflare Worker/Durable Object、旧 Supabase rollback input、環境 Template、Release Automation は [`thangldw/bizroll-game`](https://github.com/thangldw/bizroll-game) で管理されています。
 
 ### リポジトリ内容
 
@@ -174,16 +174,16 @@ npm run test:e2e:prod
 
 6. 新しいブラウザセッションで本番 URL を確認します。
 
-Deployment、Backup、Rollback、Incident 対応の詳細は Source Repository の [Operations Runbook](https://github.com/thangldw/bizroll-game/blob/main/OPERATIONS.md) を参照してください。
+Deployment、Backup、Rollback、Incident 対応の詳細は Source Repository の [Operations Runbook](https://github.com/thangldw/bizroll-game/blob/main/docs/cloudflare-operations.md) を参照してください。
 
 ### ロールバック
 
-直近の正常な Artifact Commit を復元して Push し、GitHub Pages 完了後に本番 Smoke Test を再実行します。Web の Rollback は Supabase Migration や `match-action` Edge Function を戻しません。古い Client を復元する前に Backend 互換性を確認してください。
+直近の正常な Artifact Commit を復元して Push し、GitHub Pages 完了後に本番 Smoke Test を再実行します。Web の Rollback は Worker version や Durable Object data を戻しません。Client/backend 互換性を確認し、旧 Supabase source は履歴参照であり、利用可能な hosted rollback backend ではありません。
 
 ### セキュリティ
 
 - Secret、Database Export、実際の環境ファイル、Source Map をコミットしないでください。
-- Supabase publishable/anonymous key は設計上 Client Bundle に含まれることがありますが、特権 service-role key と Database Credential は絶対に含めてはいけません。
+- Worker session/operations secret と特権 credential を frontend bundle に含めません。旧 Supabase public key は特権 secret ではありませんが、service-role key は禁止です。
 - 脆弱性の疑いはリポジトリ所有者へ非公開で報告し、悪用可能な詳細を公開しないでください。
 
 現在、オープンソースライセンスは含まれていません。リポジトリ所有者が別途明示しない限り、すべての権利は留保されています。
