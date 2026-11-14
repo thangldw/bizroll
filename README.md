@@ -66,7 +66,7 @@ Restore the last known-good artifact commit, push it, wait for GitHub Pages, and
 - Worker session/operations secrets and privileged credentials must never enter frontend bundles. Legacy Supabase public keys are not privileged secrets; service-role keys remain forbidden.
 - Report suspected vulnerabilities privately to the repository owner rather than posting exploitable details publicly.
 
-No open-source license is currently included. All rights are reserved unless the repository owner states otherwise.
+Licensed under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for scope.
 
 ---
 
